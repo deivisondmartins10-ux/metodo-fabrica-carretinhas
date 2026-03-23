@@ -990,6 +990,92 @@ footer{
       el.textContent=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');
     },1000);
   })();
+
+  // ══════════════════════════════════════════════
+  // META PIXEL — TRACKING COMPLETO
+  // ══════════════════════════════════════════════
+  (function(){
+
+    // ── ViewContent: página carregada e visível ──
+    fbq('track','ViewContent',{
+      content_name:'Método FABRICA — Carretinhas',
+      content_category:'Curso Digital',
+      value:29.90, currency:'BRL'
+    });
+
+    // ── Scroll depth: 25% / 50% / 75% / 90% ──
+    const sm={25:false,50:false,75:false,90:false};
+    window.addEventListener('scroll',function(){
+      const pct=Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
+      [25,50,75,90].forEach(function(m){
+        if(!sm[m]&&pct>=m){
+          sm[m]=true;
+          fbq('trackCustom','ScrollDepth',{depth:m+'%'});
+          if(m===75) fbq('track','AddToCart',{
+            content_name:'Método FABRICA — Carretinhas',
+            value:29.90, currency:'BRL'
+          });
+        }
+      });
+    },{passive:true});
+
+    // ── Tempo na página: 30s / 60s / 120s ──
+    [30,60,120].forEach(function(sec){
+      setTimeout(function(){
+        fbq('trackCustom','TimeOnPage',{seconds:sec});
+      },sec*1000);
+    });
+
+    // ── Seções importantes vistas ──
+    const allSecs=document.querySelectorAll('section');
+    const total=allSecs.length;
+    const secObs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting)return;
+        const el=e.target;
+        if(el.id==='escassez'&&!el.dataset.t){el.dataset.t='1';fbq('trackCustom','ViewSection_Escassez');}
+        const idx=Array.prototype.indexOf.call(allSecs,el);
+        if(idx===Math.floor(total/2)&&!el.dataset.mid){el.dataset.mid='1';fbq('trackCustom','ReachedMidPage');}
+        if(idx===total-2&&!el.dataset.bot){
+          el.dataset.bot='1';
+          fbq('trackCustom','ReachedBottomPage');
+          fbq('track','Lead',{content_name:'Método FABRICA — Carretinhas',value:29.90,currency:'BRL'});
+        }
+        secObs.unobserve(el);
+      });
+    },{threshold:0.3});
+    allSecs.forEach(function(s){secObs.observe(s);});
+
+    // ── Vídeos: play ──
+    document.querySelectorAll('video').forEach(function(vid,i){
+      let fired=false;
+      vid.addEventListener('play',function(){
+        if(fired)return; fired=true;
+        fbq('trackCustom','VideoPlay',{video_index:i+1});
+      });
+    });
+
+    // ── Sticky bar clicada ──
+    const stickyLink=document.querySelector('.sticky-bar a');
+    if(stickyLink){
+      stickyLink.addEventListener('click',function(){
+        fbq('trackCustom','StickyBarClick');
+      });
+    }
+
+    // ── InitiateCheckout enriquecido em todos os botões Cakto ──
+    document.querySelectorAll('a[href*="cakto"]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        fbq('track','InitiateCheckout',{
+          content_name:'Método FABRICA — Carretinhas',
+          content_ids:['metodo-fabrica-carretinhas'],
+          content_type:'product',
+          value:29.90, currency:'BRL', num_items:1
+        });
+      });
+    });
+
+  })();
 </script>
 </body>
 </html>
