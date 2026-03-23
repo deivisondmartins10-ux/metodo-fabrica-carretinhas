@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Método FABRICA — Carretinhas Profissionais</title>
+
+<!-- META PIXEL -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1366880421909400');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1366880421909400&ev=PageView&noscript=1"/></noscript>
+
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600&f[]=satoshi@400,500,700&display=swap">
+
+<style>
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM — RAW FORM BRUTALIST
+═══════════════════════════════════════ */
+:root {
+  --base:    #E4E2DD;
+  --primary: #1E1E1E;
+  --accent:  #DB4A2B;
+  --orange:  #F8A348;
+  --pink:    #FF89A9;
+  --white:   #FFFFFF;
+  --muted:   #6B6860;
+  --radius:  0px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+::selection{background:var(--accent);color:#fff;}
+
+html{scroll-behavior:smooth;}
+
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--base);}
+::-webkit-scrollbar-thumb{background:var(--accent);}
+
+body{
+  background:var(--base);
+  color:var(--primary);
+  font-family:'Satoshi',sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── TIPOGRAFIA ── */
+.clash{font-family:'Clash Display',sans-serif;font-weight:700;letter-spacing:-0.04em;line-height:0.9;}
+.satoshi{font-family:'Satoshi',sans-serif;}
+
+/* ── CONTAINER ── */
+.container{width:100%;max-width:500px;margin:0 auto;padding:0 22px;}
+
+/* ── TAG ── */
+.tag{
+  display:inline-block;
+  background:var(--accent);
+  color:#fff;
+  font-family:'Satoshi',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  padding:4px 12px;
+  margin-bottom:16px;
+}
+
+/* ── BLOBS ── */
+.blob-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+.blob{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(140px);
+  mix-blend-mode:multiply;
+  opacity:0;
+  animation:blobPulse 12s ease-in-out infinite;
+}
+.blob-1{width:70vw;height:70vw;background:var(--accent);top:-20%;left:-20%;animation-delay:0s;}
+.blob-2{width:55vw;height:55vw;background:var(--orange);bottom:-10%;right:-15%;animation-delay:4s;}
+.blob-3{width:40vw;height:40vw;background:var(--pink);top:30%;right:10%;animation-delay:8s;}
+@keyframes blobPulse{
+  0%{opacity:0;transform:translate(0,0) scale(1);}
+  50%{opacity:0.55;transform:translate(3%,5%) scale(1.08);}
+  100%{opacity:0;transform:translate(0,0) scale(1);}
+}
+
+/* ── SLIDE-UP ANIMATIONS ── */
+.su{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.su.visible{opacity:1;transform:translateY(0);}
+.su-1{transition-delay:.05s;}
+.su-2{transition-delay:.15s;}
+.su-3{transition-delay:.25s;}
+.su-4{transition-delay:.35s;}
+
+/* ══════════════════
+   HERO
+══════════════════ */
+#hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:0 0 52px;
+  overflow:hidden;
+  background:var(--base);
+}
+.hero-eyebrow{
+  font-family:'Satoshi',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:16px;
+}
+.hero-h1{
+  font-family:'Clash Display',sans-serif;
+  font-weight:700;
+  font-size:clamp(52px,14vw,88px);
+  letter-spacing:-0.04em;
+  line-height:0.88;
+  color:var(--primary);
+  margin-bottom:24px;
+}
+.hero-h1 .indent{display:block;padding-left:min(18vw, 90px);}
+.hero-h1 .accent-word{color:var(--accent);}
+.hero-sub{
+  font-size:15px;
+  color:var(--muted);
+  max-width:340px;
+  line-height:1.6;
+  margin-bottom:32px;
+}
+.hero-sub strong{color:var(--primary);font-weight:700;}
+.hero-loop{
+  background:var(--primary);
+  color:var(--base);
+  font-size:13px;
+  padding:14px 16px;
+  line-height:1.6;
+  margin-bottom:32px;
+  border-left:3px solid var(--accent);
+}
+.hero-loop strong{color:var(--orange);}
+
+/* ── BTN PRINCIPAL (fill slide) ── */
+.btn-fill{
+  position:relative;
+  display:block;
+  width:100%;
+  background:var(--primary);
+  color:var(--base);
+  font-family:'Satoshi',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  text-align:center;
+  text-decoration:none;
+  padding:18px 24px;
+  overflow:hidden;
+  border:none;
+  cursor:pointer;
+  transition:color .3s ease;
+}
+.btn-fill::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--accent);
+  transform:translateX(-100%);
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+  z-index:0;
+}
+.btn-fill:hover::before{transform:translateX(0);}
+.btn-fill span{position:relative;z-index:1;}
+
+/* ── BTN RAINBOW ── */
+@keyframes rainbow{0%{background-position:0%}100%{background-position:200%}}
+.btn-rainbow{
+  position:relative;
+  display:block;
+  width:100%;
+  text-align:center;
+  text-decoration:none;
+  font-family:'Satoshi',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:18px 24px;
+  cursor:pointer;
+  border:none;
+  color:#fff;
+  background:linear-gradient(90deg,#DB4A2B,#F8A348,#FF89A9,#DB4A2B,#F8A348) 0%/200%;
+  animation:rainbow 2.5s linear infinite;
+  transition:opacity .2s;
+}
+.btn-rainbow:hover{opacity:.9;}
+.btn-rainbow::before{
+  content:'';
+  position:absolute;
+  bottom:-18px;left:50%;
+  transform:translateX(-50%);
+  width:60%;height:18px;
+  background:linear-gradient(90deg,#DB4A2B,#F8A348,#FF89A9,#DB4A2B);
+  background-size:200%;
+  animation:rainbow 2.5s linear infinite;
+  filter:blur(10px);
+  opacity:.6;
+}
+
+/* ══════════════════
+   SEÇÕES GERAIS
+══════════════════ */
+section{padding:72px 0;position:relative;}
+.sec-dark{background:var(--primary);color:var(--base);}
+.sec-mid{background:#D9D6D0;}
+.sec-accent{background:var(--accent);color:#fff;}
+
+.sec-h{
+  font-family:'Clash Display',sans-serif;
+  font-weight:700;
+  font-size:clamp(34px,9vw,56px);
+  letter-spacing:-0.04em;
+  line-height:0.9;
+  margin-bottom:20px;
+}
+.sec-h .hl{color:var(--accent);}
+.sec-h-inv .hl{color:var(--orange);}
+
+.sec-sub{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+.sec-dark .sec-sub{color:#8B8B80;}
+
+.divider{width:40px;height:3px;background:var(--accent);margin:16px 0;}
+.divider-inv{background:var(--orange);}
+
+/* ── PILLS ── */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.pill{
+  border:1px solid rgba(30,30,30,0.2);
+  color:var(--primary);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:5px 12px;
+}
+.sec-dark .pill{border-color:rgba(228,226,221,0.2);color:var(--base);}
+
+/* ── CATÁLOGO IMAGEM ── */
+.cat-img-wrap{position:relative;overflow:hidden;margin-bottom:0;}
+.cat-img{width:100%;display:block;transition:max-height .6s cubic-bezier(.16,1,.3,1);}
+.cat-img.collapsed{max-height:380px;object-fit:cover;object-position:top;}
+.cat-img.expandida{max-height:9999px;}
+.cat-img-overlay{
+  position:absolute;bottom:0;left:0;right:0;height:130px;
+  background:linear-gradient(transparent,var(--primary));
+  pointer-events:none;transition:opacity .4s;
+}
+.cat-img-overlay.hidden{opacity:0;}
+.btn-expand{
+  display:block;width:100%;
+  background:transparent;
+  border:1px solid rgba(228,226,221,0.25);
+  color:var(--base);
+  font-family:'Satoshi',sans-serif;
+  font-size:12px;font-weight:700;
+  letter-spacing:0.15em;text-transform:uppercase;
+  text-align:center;padding:14px;
+  cursor:pointer;margin-top:14px;
+  transition:background .2s;
+}
+.btn-expand:hover{background:rgba(228,226,221,0.08);}
+.cat-prova{
+  display:flex;justify-content:space-between;
+  padding:14px 0 0;
+  font-size:11px;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:#8B8B80;
+  border-top:1px solid rgba(228,226,221,0.1);
+  margin-top:14px;
+}
+
+/* ── LISTAS ── */
+.dor-lista{list-style:none;margin:0 0 24px;}
+.dor-lista li{
+  padding:13px 0 13px 22px;
+  border-bottom:1px solid rgba(30,30,30,0.08);
+  font-size:15px;color:var(--primary);
+  position:relative;
+}
+.sec-dark .dor-lista li{color:var(--base);border-color:rgba(228,226,221,0.08);}
+.dor-lista li::before{content:'—';position:absolute;left:0;color:var(--accent);font-weight:700;}
+.dor-lista li:last-child{border-bottom:none;}
+
+.frase-impacto{
+  background:var(--primary);color:var(--base);
+  border-left:4px solid var(--accent);
+  padding:18px 16px;font-size:15px;line-height:1.65;
+}
+.frase-impacto em{color:var(--orange);font-style:italic;}
+
+/* ── INIMIGO ── */
+.inimigo-box{display:flex;flex-direction:column;gap:8px;margin:16px 0;}
+.inimigo-item{
+  display:flex;gap:14px;align-items:flex-start;
+  background:rgba(219,74,43,0.06);
+  border-left:3px solid var(--accent);
+  padding:14px;
+}
+.ini-icone{font-size:20px;flex-shrink:0;margin-top:2px;}
+.ini-titulo{font-weight:700;font-size:14px;color:var(--primary);margin-bottom:3px;}
+.sec-dark .ini-titulo{color:var(--base);}
+.ini-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+.sec-dark .ini-desc{color:#8B8B80;}
+.conclusao-crenca{font-size:17px;font-weight:700;color:var(--accent);margin-top:16px;line-height:1.4;}
+
+/* ── MÉTODO FABRICA ── */
+.fab-lista{list-style:none;display:flex;flex-direction:column;gap:2px;}
+.fab-item{
+  display:flex;align-items:stretch;gap:0;
+  background:rgba(228,226,221,0.05);
+  border:1px solid rgba(228,226,221,0.07);
+  overflow:hidden;
+}
+.fab-letra{
+  background:var(--accent);color:#fff;
+  font-family:'Clash Display',sans-serif;
+  font-size:28px;width:52px;min-width:52px;
+  display:flex;align-items:center;justify-content:center;
+  letter-spacing:-0.02em;
+}
+.fab-texto{padding:14px 16px;flex:1;}
+.fab-titulo{font-weight:700;font-size:14px;color:var(--base);margin-bottom:2px;}
+.fab-desc{font-size:12px;color:#8B8B80;line-height:1.4;}
+
+/* ── QUOTE / VISUALIZAÇÃO ── */
+.quote-box{
+  background:var(--base);
+  border-left:4px solid var(--accent);
+  padding:20px 18px;margin:20px 0;
+}
+.quote-box .aspas{
+  font-family:'Clash Display',sans-serif;
+  font-size:52px;color:var(--accent);line-height:0.7;
+  display:block;margin-bottom:10px;
+}
+.quote-box p{font-size:18px;font-style:italic;color:var(--primary);line-height:1.5;}
+.progressao{display:flex;flex-direction:column;gap:6px;margin:20px 0;}
+.prog-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;
+  background:rgba(228,226,221,0.05);
+  border:1px solid rgba(228,226,221,0.07);
+  font-size:14px;font-weight:600;color:var(--base);
+}
+.prog-item .seta{color:var(--accent);font-size:18px;}
+
+/* ── PROVA / ERROS ── */
+.erros-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:20px 0;}
+.erro-card{
+  background:rgba(219,74,43,0.06);
+  border:1px solid rgba(219,74,43,0.18);
+  padding:16px 14px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.err-icon{font-size:22px;}
+.err-titulo{font-size:13px;font-weight:700;color:var(--accent);}
+.err-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.sec-dark .err-desc{color:#8B8B80;}
+.atalho-box{
+  background:rgba(248,163,72,0.08);
+  border:1px solid rgba(248,163,72,0.3);
+  padding:20px;margin-top:20px;text-align:center;
+}
+.atalho-box p{font-size:15px;font-weight:700;color:var(--orange);line-height:1.5;}
+
+/* ── O QUE VOCÊ RECEBE ── */
+.recebe-lista{list-style:none;margin:20px 0;display:flex;flex-direction:column;gap:4px;}
+.recebe-lista li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 14px;
+  background:rgba(228,226,221,0.04);
+  border:1px solid rgba(228,226,221,0.07);
+  font-size:14px;color:var(--base);
+}
+.check{color:var(--accent);font-size:16px;margin-top:1px;flex-shrink:0;}
+
+/* ── ANCORAGEM ── */
+.custo-lista{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
+.custo-item{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;
+  background:rgba(219,74,43,0.06);
+  border-left:3px solid var(--accent);
+  font-size:14px;color:var(--primary);
+}
+.x-ico{color:var(--accent);font-weight:700;font-size:16px;}
+.custo-total{
+  background:var(--primary);
+  padding:18px;text-align:center;
+  font-size:14px;color:#8B8B80;line-height:1.7;
+}
+.custo-total strong{color:var(--accent);font-size:22px;display:block;margin-top:4px;}
+
+/* ── OFERTA / PREÇO ── */
+.preco-box{
+  background:var(--primary);
+  border:2px solid var(--accent);
+  padding:32px 20px;margin:24px 0;text-align:center;
+}
+.preco-de{font-size:12px;color:#8B8B80;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+.preco-valor{
+  font-family:'Clash Display',sans-serif;
+  font-size:72px;color:var(--accent);
+  letter-spacing:-0.04em;line-height:1;
+}
+.preco-nota{font-size:12px;color:#8B8B80;margin-top:10px;}
+
+/* ── GARANTIA ── */
+.garantia-box{
+  background:var(--primary);
+  border:2px dashed rgba(228,226,221,0.2);
+  padding:32px 20px;text-align:center;
+}
+.garantia-icon{font-size:52px;display:block;margin-bottom:14px;}
+.gtit{
+  font-family:'Clash Display',sans-serif;
+  font-size:32px;color:var(--orange);
+  letter-spacing:-0.04em;margin-bottom:12px;
+}
+.gtxt{font-size:15px;color:#8B8B80;line-height:1.65;margin-bottom:8px;}
+.gtxt-strong{font-size:16px;font-weight:700;color:var(--base);margin-top:12px;}
+
+/* ── URGÊNCIA ── */
+#escassez{background:var(--accent);color:#fff;padding:52px 0;}
+#escassez .sec-h{color:#fff;}
+.urg-counter{display:flex;justify-content:center;margin-top:24px;}
+.urg-num{
+  font-family:'Clash Display',sans-serif;
+  font-size:64px;color:#fff;
+  background:rgba(0,0,0,0.25);
+  padding:10px 28px;
+  letter-spacing:4px;display:inline-block;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.urg-label{font-size:11px;color:rgba(255,255,255,0.7);margin-top:8px;
+  letter-spacing:0.15em;text-transform:uppercase;text-align:center;}
+
+/* ── CTA FINAL ── */
+.escolhas{display:flex;flex-direction:column;gap:10px;margin:20px 0;}
+.escolha{display:flex;align-items:flex-start;gap:12px;padding:16px;font-size:15px;line-height:1.5;}
+.escolha.nao{background:rgba(219,74,43,0.06);border-left:3px solid rgba(219,74,43,0.3);color:var(--muted);}
+.escolha.sim{background:rgba(219,74,43,0.08);border-left:3px solid var(--accent);font-weight:700;color:var(--primary);}
+.escolha .ico{font-size:20px;margin-top:1px;flex-shrink:0;}
+.seguro-line{font-size:11px;color:var(--muted);text-align:center;margin-top:14px;letter-spacing:0.05em;}
+
+/* ── CARROSSEL VÍDEOS ── */
+.carousel-wrap{position:relative;overflow:hidden;border:2px solid rgba(30,30,30,0.12);background:#000;}
+.carousel-track{display:flex;transition:transform .45s cubic-bezier(.16,1,.3,1);will-change:transform;}
+.carousel-slide{min-width:100%;position:relative;}
+.vid-player{width:100%;display:block;max-height:520px;object-fit:cover;}
+.vid-badge{
+  position:absolute;top:12px;left:12px;
+  background:var(--accent);color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:0.15em;
+  text-transform:uppercase;padding:4px 10px;
+}
+.car-controls{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;background:var(--primary);
+}
+.car-btn{
+  background:transparent;
+  border:1px solid rgba(228,226,221,0.2);
+  color:var(--base);font-size:18px;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s;
+}
+.car-btn:hover{background:rgba(228,226,221,0.08);}
+.car-dots{display:flex;gap:8px;}
+.dot{
+  width:8px;height:8px;background:rgba(228,226,221,0.2);
+  cursor:pointer;transition:background .2s;
+}
+.dot.active{background:var(--accent);}
+
+/* ── DEPOIMENTOS ── */
+.dep-carousel-wrap{overflow:hidden;border:1px solid rgba(30,30,30,0.1);background:var(--base);}
+.dep-track{display:flex;transition:transform .45s cubic-bezier(.16,1,.3,1);}
+.dep-slide{min-width:100%;display:flex;flex-direction:column;}
+.dep-img{width:100%;display:block;max-height:430px;object-fit:cover;object-position:top;
+  border-bottom:2px solid rgba(219,74,43,0.2);}
+.dep-info{padding:18px 20px 22px;background:var(--base);}
+.dep-nome{
+  font-family:'Clash Display',sans-serif;
+  font-size:22px;color:var(--accent);
+  letter-spacing:-0.02em;margin-bottom:8px;
+}
+.dep-frase{
+  font-size:14px;color:var(--primary);line-height:1.65;font-style:italic;
+  border-left:3px solid var(--accent);padding-left:12px;
+}
+.dep-controls{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;background:var(--primary);
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--primary);color:#8B8B80;
+  text-align:center;padding:28px 20px;
+  font-size:11px;line-height:1.8;letter-spacing:0.08em;
+  text-transform:uppercase;position:relative;overflow:hidden;
+}
+.footer-bg-year{
+  position:absolute;right:-10px;bottom:-20px;
+  font-family:'Clash Display',sans-serif;
+  font-size:22vw;color:rgba(255,255,255,0.04);
+  letter-spacing:-0.04em;line-height:1;pointer-events:none;
+  user-select:none;
+}
+
+/* ── STICKY BAR ── */
+.sticky-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--primary);z-index:999;
+  padding:12px 20px;
+  transform:translateY(100%);
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+  border-top:2px solid var(--accent);
+}
+.sticky-bar.visivel{transform:translateY(0);}
+.sticky-bar a{
+  display:block;text-align:center;
+  color:var(--base);text-decoration:none;
+  font-family:'Satoshi',sans-serif;
+  font-weight:700;font-size:13px;
+  letter-spacing:0.15em;text-transform:uppercase;
+}
+.sticky-bar a span{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="blob-wrap">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="container" style="position:relative;z-index:2;">
+    <p class="hero-eyebrow su su-1">Método F.A.B.R.I.C.A</p>
+    <h1 class="hero-h1 su su-2">
+      CADA<br>
+      <span class="indent">ERRO<br>
+      CUSTA</span>
+      <span class="accent-word indent">CARO.</span>
+    </h1>
+    <p class="hero-sub su su-3">
+      Cada carretinha montada no improviso é dinheiro que você nunca vai ver de volta.
+      <strong>Erro de medida. Estrutura torta. Cliente que não volta.</strong>
+      Isso não é azar — é falta de processo.
+    </p>
+    <div class="hero-loop su su-3">
+      Existe um erro silencioso que a maioria comete <strong>desde a primeira solda</strong> — que garante retrabalho, reclamação e perda de cliente. <strong>Você vai descobrir qual é — ainda nessa página.</strong>
+    </div>
+    <a href="https://www.ggcheckout.com/checkout/v2/Oj87KqlZiP2jq515QpTh" target="_blank" rel="noopener"
+       onclick="fbq('track','InitiateCheckout')"
+       class="btn-rainbow su su-4">
+      🔥 Quero sair do improviso agora
+    </a>
+    <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:14px;letter-spacing:0.08em;" class="su su-4">
+      30 PROJETOS · R$29,90 · GARANTIA 7 DIAS
+    </p>
+  </div>
+</section>
+
+<!-- ══════════ CATÁLOGO ══════════ -->
+<section class="sec-dark">
+  <div class="container">
+    <span class="tag">Prova visual</span>
+    <h2 class="sec-h sec-h-inv su">+30 PROJETOS<br><span class="hl">PRONTOS PRA FABRICAR</span></h2>
+    <div class="divider divider-inv su"></div>
+    <div class="pills su">
+      <span class="pill">Medidas exatas</span>
+      <span class="pill">Estrutura profissional</span>
+      <span class="pill">Passo a passo</span>
+      <span class="pill">Lista de materiais</span>
+    </div>
+    <div class="cat-img-wrap su">
+      <img src="assets/catalogo1.jpg" alt="Catálogo 30 projetos" id="catImg" class="cat-img collapsed">
+      <div class="cat-img-overlay" id="catOverlay"></div>
+    </div>
+    <button class="btn-expand su" id="btnVerMais" onclick="expandirCatalogo()">▼ Ver todos os 30 projetos</button>
+    <div class="cat-prova su">
+      <span>📐 Medidas exatas</span>
+      <span>🔩 Estrutura testada</span>
+      <span>✅ Sem improviso</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ IDENTIFICAÇÃO ══════════ -->
+<section>
+  <div class="container">
+    <span class="tag">Você já passou por isso</span>
+    <h2 class="sec-h su">SE VOCÊ FABRICA,<br><span class="hl">RECONHECE ISSO:</span></h2>
+    <div class="divider su"></div>
+    <ul class="dor-lista su">
+      <li>Montou a estrutura e só percebeu que estava torta no final</li>
+      <li>Ouviu cliente reclamar de acabamento ou de resistência</li>
+      <li>Teve prejuízo por erro de medida ou escolha errada de material</li>
+      <li>Entregou o trabalho com aquela dúvida: <em>"será que vai aguentar?"</em></li>
+    </ul>
+    <div class="frase-impacto su">
+      E o que dói de verdade não é o erro em si.<br><br>
+      É saber que você tem capacidade… mas <em>algo sempre trava antes do lucro aparecer.</em>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ INIMIGO ══════════ -->
+<section class="sec-dark">
+  <div class="container">
+    <span class="tag">O verdadeiro inimigo</span>
+    <h2 class="sec-h sec-h-inv su">O PROBLEMA<br>TEM NOME:<br><span class="hl">IMPROVISO.</span></h2>
+    <div class="divider divider-inv su"></div>
+    <p class="sec-sub su">Ele aparece disfarçado de experiência, de "olho clínico", de "já fiz assim antes".</p>
+    <div class="inimigo-box su">
+      <div class="inimigo-item">
+        <span class="ini-icone">👁️</span>
+        <div><div class="ini-titulo">"Faço no olho"</div><div class="ini-desc">Parece rápido. Mas uma medida errada custa mais do que horas de retrabalho.</div></div>
+      </div>
+      <div class="inimigo-item">
+        <span class="ini-icone">🤔</span>
+        <div><div class="ini-titulo">"Acho que aguenta"</div><div class="ini-desc">Achismo não tem garantia. O cliente que reclama não volta — e ainda conta pra outros.</div></div>
+      </div>
+      <div class="inimigo-item">
+        <span class="ini-icone">🔁</span>
+        <div><div class="ini-titulo">"Já fiz assim outras vezes"</div><div class="ini-desc">Repetir erro não vira método. Vira hábito caro.</div></div>
+      </div>
+    </div>
+    <p class="conclusao-crenca su">O improviso não é sua culpa.<br><span style="font-size:14px;color:#8B8B80;font-weight:400;">É o que acontece quando ninguém te ensina o processo certo do início ao fim.</span></p>
+  </div>
+</section>
+
+<!-- ══════════ MÉTODO ══════════ -->
+<section>
+  <div class="container">
+    <span class="tag">O sistema</span>
+    <h2 class="sec-h su" style="font-size:clamp(48px,14vw,80px);color:var(--accent);">F.A.B.R.I.C.A</h2>
+    <p class="sec-sub su">O sistema completo para fabricar carretinhas profissionais — com segurança, precisão e lucro.</p>
+    <ul class="fab-lista su">
+      <li class="fab-item"><div class="fab-letra">F</div><div class="fab-texto"><div class="fab-titulo">Fundação Estrutural</div><div class="fab-desc">A base que não empena, não cede, não envergonha</div></div></li>
+      <li class="fab-item"><div class="fab-letra">A</div><div class="fab-texto"><div class="fab-titulo">Alinhamento Perfeito</div><div class="fab-desc">Medidas certas desde o primeiro corte</div></div></li>
+      <li class="fab-item"><div class="fab-letra">B</div><div class="fab-texto"><div class="fab-titulo">Base Reforçada</div><div class="fab-desc">Estrutura que aguenta carga real no mundo real</div></div></li>
+      <li class="fab-item"><div class="fab-letra">R</div><div class="fab-texto"><div class="fab-titulo">Resistência na Prática</div><div class="fab-desc">Sem retrabalho, sem volta do cliente insatisfeito</div></div></li>
+      <li class="fab-item"><div class="fab-letra">I</div><div class="fab-texto"><div class="fab-titulo">Instalação Correta</div><div class="fab-desc">Cada peça no lugar certo, sem improviso</div></div></li>
+      <li class="fab-item"><div class="fab-letra">C</div><div class="fab-texto"><div class="fab-titulo">Cálculo de Carga</div><div class="fab-desc">Segurança total para você e para quem vai usar</div></div></li>
+      <li class="fab-item"><div class="fab-letra">A</div><div class="fab-texto"><div class="fab-titulo">Acabamento Profissional</div><div class="fab-desc">O detalhe que faz o cliente te indicar antes de sair</div></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ VISUALIZAÇÃO ══════════ -->
+<section class="sec-dark">
+  <div class="container">
+    <span class="tag">Imagine isso</span>
+    <h2 class="sec-h sec-h-inv su">VOCÊ ENTREGA.<br><span class="hl">O CLIENTE INDICA.</span></h2>
+    <div class="divider divider-inv su"></div>
+    <div class="progressao su">
+      <div class="prog-item"><span class="seta">▸</span> Alinhada e nivelada do zero</div>
+      <div class="prog-item"><span class="seta">▸</span> Resistente à carga real</div>
+      <div class="prog-item"><span class="seta">▸</span> Acabamento que impressiona</div>
+    </div>
+    <div class="quote-box su" style="background:rgba(228,226,221,0.04);border-color:var(--orange);">
+      <span class="aspas" style="color:var(--orange);">"</span>
+      <p style="color:var(--base);">Cara, esse é o melhor trabalho que já contratei.</p>
+    </div>
+    <div class="progressao su">
+      <div class="prog-item"><span class="seta" style="color:var(--orange);">→</span> Ele te indica pro amigo</div>
+      <div class="prog-item"><span class="seta" style="color:var(--orange);">→</span> Você começa a ter fila</div>
+      <div class="prog-item"><span class="seta" style="color:var(--orange);">→</span> Você cobra o que seu trabalho vale</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ VÍDEOS ══════════ -->
+<section>
+  <div class="container">
+    <span class="tag">Resultado real</span>
+    <h2 class="sec-h su">VEJA COMO FICA<br><span class="hl">DEPOIS DE PRONTA</span></h2>
+    <div class="divider su"></div>
+    <p class="sec-sub su">Fabricadas com o método — sem improviso, sem retrabalho.</p>
+    <div class="carousel-wrap su">
+      <div class="carousel-track" id="carTrack">
+        <div class="carousel-slide">
+          <video src="assets/video1.mp4" autoplay loop muted playsinline preload="metadata" class="vid-player"></video>
+          <div class="vid-badge">Projeto 01</div>
+        </div>
+        <div class="carousel-slide">
+          <video src="assets/video2.mp4" loop muted playsinline preload="metadata" class="vid-player"></video>
+          <div class="vid-badge">Projeto 02</div>
+        </div>
+        <div class="carousel-slide">
+          <video src="assets/video3.mp4" loop muted playsinline preload="metadata" class="vid-player"></video>
+          <div class="vid-badge">Projeto 03</div>
+        </div>
+      </div>
+      <div class="car-controls">
+        <button class="car-btn" onclick="carMove(-1)">&#8592;</button>
+        <div class="car-dots" id="carDots">
+          <span class="dot active" onclick="carGoTo(0)"></span>
+          <span class="dot" onclick="carGoTo(1)"></span>
+          <span class="dot" onclick="carGoTo(2)"></span>
+        </div>
+        <button class="car-btn" onclick="carMove(1)">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROVA ══════════ -->
+<section class="sec-dark">
+  <div class="container">
+    <span class="tag">Isso não veio de livro</span>
+    <h2 class="sec-h sec-h-inv su">VEIO DE<br><span class="hl">ERRO.</span></h2>
+    <div class="divider divider-inv su"></div>
+    <div class="erros-grid su">
+      <div class="erro-card"><span class="err-icon">📐</span><div class="err-titulo">Erro de medida</div><div class="err-desc sec-dark">Material cortado errado, prejuízo certo</div></div>
+      <div class="erro-card"><span class="err-icon">🔩</span><div class="err-titulo">Erro de montagem</div><div class="err-desc">Estrutura torta, retrabalho que consome tempo</div></div>
+      <div class="erro-card"><span class="err-icon">⚙️</span><div class="err-titulo">Erro de material</div><div class="err-desc">Escolha errada, resistência comprometida</div></div>
+      <div class="erro-card"><span class="err-icon">💸</span><div class="err-titulo">Erro de cálculo</div><div class="err-desc">Carga errada, cliente insatisfeito</div></div>
+    </div>
+    <div class="atalho-box su">
+      <p>Tudo que você ainda pode errar… já foi testado e corrigido aqui.<br><span style="color:#8B8B80;font-weight:400;font-size:13px;">Você não precisa repetir o mesmo caminho. O atalho já está pronto.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DEPOIMENTOS ══════════ -->
+<section class="sec-mid">
+  <div class="container">
+    <span class="tag">Quem já aplicou</span>
+    <h2 class="sec-h su">RESULTADOS<br><span class="hl">REAIS.</span></h2>
+    <div class="divider su"></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:20px;letter-spacing:0.05em;" class="su">Prints reais. Nomes reais. Resultados reais.</p>
+    <div class="dep-carousel-wrap su">
+      <div class="dep-track" id="depTrack">
+        <div class="dep-slide">
+          <img src="assets/dep1.png" alt="Fabiano" class="dep-img">
+          <div class="dep-info"><div class="dep-nome">Fabiano</div><div class="dep-frase">"Segui tudo certinho e a estrutura ficou perfeita, bem alinhada. Já até entreguei a primeira e o cliente ficou muito satisfeito."</div></div>
+        </div>
+        <div class="dep-slide">
+          <img src="assets/dep2.png" alt="Fernando" class="dep-img">
+          <div class="dep-info"><div class="dep-nome">Fernando</div><div class="dep-frase">"Fiz uma carretinha com seu projeto e o cliente gostou tanto que já me indicou pra mais 2 pessoas. Nunca tinha acontecido isso antes."</div></div>
+        </div>
+        <div class="dep-slide">
+          <img src="assets/dep3.png" alt="Geraldo" class="dep-img">
+          <div class="dep-info"><div class="dep-nome">Geraldo</div><div class="dep-frase">"Trabalho com serralheria há anos e posso falar: esses projetos são muito bem feitos. Medidas certas, estrutura firme e fácil de seguir."</div></div>
+        </div>
+      </div>
+      <div class="dep-controls">
+        <button class="car-btn" onclick="depMove(-1)">&#8592;</button>
+        <div class="car-dots" id="depDots">
+          <span class="dot active" onclick="depGoTo(0)"></span>
+          <span class="dot" onclick="depGoTo(1)"></span>
+          <span class="dot" onclick="depGoTo(2)"></span>
+        </div>
+        <button class="car-btn" onclick="depMove(1)">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ O QUE VOCÊ RECEBE ══════════ -->
+<section class="sec-dark">
+  <div class="container">
+    <span class="tag">Acesso completo</span>
+    <h2 class="sec-h sec-h-inv su">O QUE VOCÊ<br><span class="hl">RECEBE</span></h2>
+    <div class="divider divider-inv su"></div>
+    <ul class="recebe-lista su">
+      <li><span class="check">✔</span> 30 projetos completos de carretinhas</li>
+      <li><span class="check">✔</span> Medidas detalhadas prontas para executar</li>
+      <li><span class="check">✔</span> Lista de materiais por projeto</li>
+      <li><span class="check">✔</span> Estrutura passo a passo documentada</li>
+      <li><span class="check">✔</span> Técnicas profissionais de montagem</li>
+      <li><span class="check">✔</span> Ajustes que eliminam os erros mais comuns</li>
+    </ul>
+    <a href="https://www.ggcheckout.com/checkout/v2/Oj87KqlZiP2jq515QpTh" target="_blank" rel="noopener"
+       onclick="fbq('track','InitiateCheckout')"
+       class="btn-fill su" style="margin-top:28px;">
+      <span>👉 Quero acesso agora</span>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════ ANCORAGEM ══════════ -->
+<section>
+  <div class="container">
+    <span class="tag">Se fosse aprender sozinho</span>
+    <h2 class="sec-h su">NO MODO DIFÍCIL<br><span class="hl">VOCÊ PAGARIA MAIS:</span></h2>
+    <div class="divider su"></div>
+    <ul class="custo-lista su">
+      <li class="custo-item"><span class="x-ico">✕</span> Erros de medida = material jogado fora</li>
+      <li class="custo-item"><span class="x-ico">✕</span> Estrutura mal feita = retrabalho caro</li>
+      <li class="custo-item"><span class="x-ico">✕</span> Cliente insatisfeito = reputação arranhada</li>
+      <li class="custo-item"><span class="x-ico">✕</span> Tempo perdido = lucro adiado</li>
+    </ul>
+    <div class="custo-total su">
+      Só em material desperdiçado e retrabalho, você facilmente perde:
+      <strong>R$2.000 a R$5.000</strong>
+      antes de acertar a mão.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ OFERTA ══════════ -->
+<section class="sec-dark" style="text-align:center;">
+  <div class="container">
+    <span class="tag">Investimento</span>
+    <h2 class="sec-h sec-h-inv su">MAS VOCÊ NÃO<br>PRECISA<br><span class="hl">PASSAR POR ISSO.</span></h2>
+    <div class="preco-box su">
+      <div class="preco-de">Hoje você acessa tudo por apenas</div>
+      <div class="preco-valor">R$29,90</div>
+      <div class="preco-nota">Menos do que o custo de um único erro de medida.</div>
+    </div>
+    <a href="https://www.ggcheckout.com/checkout/v2/Oj87KqlZiP2jq515QpTh" target="_blank" rel="noopener"
+       onclick="fbq('track','InitiateCheckout')"
+       class="btn-rainbow su">
+      🔥 Quero começar agora
+    </a>
+  </div>
+</section>
+
+<!-- ══════════ GARANTIA ══════════ -->
+<section class="sec-mid">
+  <div class="container">
+    <div class="garantia-box su">
+      <span class="garantia-icon">🛡️</span>
+      <div class="gtit">GARANTIA DE 7 DIAS</div>
+      <p class="gtxt">Você entra, acessa tudo e testa na prática.</p>
+      <p class="gtxt">Se por qualquer motivo achar que não valeu a pena — é só pedir.</p>
+      <p class="gtxt-strong">100% do seu dinheiro de volta.<br>Sem pergunta. Sem burocracia.</p>
+      <p style="font-size:12px;color:#8B8B80;margin-top:10px;">O risco é todo nosso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ESCASSEZ ══════════ -->
+<section id="escassez">
+  <div class="container" style="text-align:center;">
+    <h2 class="sec-h su" style="color:#fff;">CADA DIA SEM O MÉTODO<br>É UM DIA PAGANDO<br>PELO IMPROVISO</h2>
+    <p style="font-size:15px;color:rgba(255,255,255,0.8);margin:16px 0;line-height:1.65;" class="su">
+      Enquanto você adia, alguém na sua cidade está fechando o pedido que poderia ser seu.<br>
+      <strong>O preço de hoje é o menor que vai existir.</strong>
+    </p>
+    <div class="urg-counter su">
+      <div>
+        <div class="urg-num" id="uTimer">10:00</div>
+        <div class="urg-label">Oferta especial expira em</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA FINAL ══════════ -->
+<section style="background:var(--base);text-align:center;">
+  <div class="container">
+    <span class="tag">Sua decisão</span>
+    <h2 class="sec-h su">2 ESCOLHAS.<br><span class="hl">1 DECISÃO.</span></h2>
+    <div class="divider su"></div>
+    <div class="escolhas su">
+      <div class="escolha nao"><span class="ico">❌</span><span>Continuar no improviso — errando, retrabalho, perdendo cliente e dinheiro</span></div>
+      <div class="escolha sim"><span class="ico">✅</span><span>Pegar o método testado, fabricar certo e começar a lucrar de verdade</span></div>
+    </div>
+    <a href="https://www.ggcheckout.com/checkout/v2/Oj87KqlZiP2jq515QpTh" target="_blank" rel="noopener"
+       onclick="fbq('track','InitiateCheckout')"
+       class="btn-rainbow su" style="font-size:15px;padding:22px 24px;margin-top:8px;">
+      🔥 Quero fabricar certo e lucrar agora
+    </a>
+    <p class="seguro-line su">🔒 Compra 100% segura · Acesso imediato · Garantia de 7 dias</p>
+  </div>
+</section>
+
+<footer>
+  <div style="position:relative;z-index:1;">
+    <p>© 2025 Método Fabrica — Todos os direitos reservados</p>
+    <p style="margin-top:6px;">Política de Privacidade · Termos de Uso · Suporte</p>
+  </div>
+  <div class="footer-bg-year">2025</div>
+</footer>
+
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <a href="https://www.ggcheckout.com/checkout/v2/Oj87KqlZiP2jq515QpTh" target="_blank" rel="noopener" onclick="fbq('track','InitiateCheckout')">
+    🔥 Garantir por <span>R$29,90</span> agora
+  </a>
+</div>
+
+<script>
+  // ── Catálogo expand ──
+  function expandirCatalogo() {
+    const img = document.getElementById('catImg');
+    const ov  = document.getElementById('catOverlay');
+    const btn = document.getElementById('btnVerMais');
+    img.classList.toggle('collapsed');
+    img.classList.toggle('expandida');
+    ov.classList.toggle('hidden');
+    btn.textContent = img.classList.contains('expandida') ? '▲ Recolher' : '▼ Ver todos os 30 projetos';
+  }
+
+  // ── Carrossel Vídeos ──
+  let carIdx=0; const carTotal=3;
+  function carMove(d){carGoTo(carIdx+d);}
+  function carGoTo(i){
+    const track=document.getElementById('carTrack');
+    const dots=document.querySelectorAll('#carDots .dot');
+    const vids=document.querySelectorAll('#carTrack .vid-player');
+    vids.forEach(v=>v.pause());
+    carIdx=(i+carTotal)%carTotal;
+    track.style.transform=`translateX(-${carIdx*100}%)`;
+    dots.forEach((d,j)=>d.classList.toggle('active',j===carIdx));
+    vids[carIdx].play();
+  }
+  (function(){
+    const el=document.getElementById('carTrack'); let sx=0;
+    el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;});
+    el.addEventListener('touchend',e=>{
+      const dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>40)carMove(dx<0?1:-1);
+    });
+  })();
+
+  // ── Carrossel Depoimentos ──
+  let depIdx=0; const depTotal=3;
+  function depMove(d){depGoTo(depIdx+d);}
+  function depGoTo(i){
+    const track=document.getElementById('depTrack');
+    const dots=document.querySelectorAll('#depDots .dot');
+    depIdx=(i+depTotal)%depTotal;
+    track.style.transform=`translateX(-${depIdx*100}%)`;
+    dots.forEach((d,j)=>d.classList.toggle('active',j===depIdx));
+  }
+  (function(){
+    const el=document.getElementById('depTrack'); let sx=0;
+    el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;});
+    el.addEventListener('touchend',e=>{
+      const dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>40)depMove(dx<0?1:-1);
+    });
+  })();
+
+  // ── Sticky bar ──
+  const heroEl=document.getElementById('hero');
+  const sticky=document.getElementById('stickyBar');
+  new IntersectionObserver(([e])=>sticky.classList.toggle('visivel',!e.isIntersecting),{threshold:0}).observe(heroEl);
+
+  // ── Slide-up on scroll ──
+  const suObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+  },{threshold:0.08});
+  document.querySelectorAll('.su').forEach(el=>suObs.observe(el));
+
+  // ── Countdown ──
+  (function(){
+    let secs=10*60;
+    const el=document.getElementById('uTimer');
+    if(!el)return;
+    setInterval(()=>{
+      if(secs<=0){el.textContent='00:00';return;}
+      secs--;
+      el.textContent=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');
+    },1000);
+  })();
+</script>
+</body>
+</html>
